@@ -6,6 +6,8 @@ Argo Events playground (Code Camp 2024)
 
 ## MinIO Use Case
 
+![minio](minio.drawio.png "minio")
+
 Deploy MinIO instance
 
 * Expose minio and minio-console svc
@@ -28,3 +30,7 @@ Create EventSource
 Create Sensor
 * [sensor.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor.yaml)
 * Create workflow as soon as `sudoku` event is created on the eventbus
+
+```
+
+
