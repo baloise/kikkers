@@ -17,6 +17,7 @@ Deploy MinIO instance
 * Create bucket with name `test` and generate Access and Secret Keys
 
 Create [native NATs eventbus](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/kustomization.yaml#L9)
+* Stan(NATS Streaming / deprecated), Jetstream (NATS JetStream) and Kafka
 * create 3 replicas with token authentication
 * token strategy will generate a token and store it in K8s secrets (one for client, one for server), EventSource and Sensor automatically use the secret
 * EventBus is namespaced; an EventBus object is required in a namespace to make EventSource and Sensor work.
