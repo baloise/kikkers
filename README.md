@@ -27,6 +27,7 @@ Create [native NATs eventbus](https://github.com/baloise-incubator/code-camp-app
   * Total size of messages before expiring the oldest messages (Defaults to 1GB)
   * Maximum number of subscriptions (Defaults to 1000)
   * Maximum number of bytes in a message payload (Defaults to 1MB)
+  * https://argoproj.github.io/argo-events/eventbus/stan/#more-about-native-nats-eventbus
 
 Create RBAC needed to run workflows
 * [sensor-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor-rbac.yaml)
