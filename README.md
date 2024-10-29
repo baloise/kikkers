@@ -34,6 +34,7 @@ Create [native NATs eventbus](https://github.com/baloise-incubator/code-camp-app
   * https://argoproj.github.io/argo-events/eventbus/stan/#more-about-native-nats-eventbus
 
 Create RBAC needed to run workflows
+
 * [sensor-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor-rbac.yaml)
 * [workflow-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/workflow-rbac.yaml)
 
@@ -45,13 +46,17 @@ Create EventSource
 
 Create Sensor
 * [sensor.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor.yaml)
-* Create workflow as soon as event is created on the eventbus
+* Create workflow that References a workflowTemplate as soon as event is created on the eventbus
 * Reference event `sudoku` event from eventSource `minio`
 * **test-dep provide metadata from event to parameters to the created workflow (to investigate)**
-* argo sensor template can be used to [trigger](https://argoproj.github.io/argo-events/APIs/#argoproj.io/v1alpha1.TriggerTemplate) [argo workflows](https://argoproj.github.io/argo-events/APIs/#argoproj.io/v1alpha1.ArgoWorkflowTrigger) from template
+* Argo Sensor k8s trigger create Argo Workflow resource
+  * Created Argo Workflows resource references Argo Workflow Template
 * use event metadata to provide path to local s3 downloaded file
+
+Create workflowTemplate
+
+* [sudoku-wft.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sudoku-wft.yaml)
 * s3 input (get files from MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * set archive to {} to keep plain files when put to s3
-* **ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)**
-
+* ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)
