@@ -44,7 +44,7 @@ Create Sensor
 * Create workflow as soon as event is created on the eventbus
 * Reference event `sudoku` event from eventSource `minio`
 * **test-dep provide metadata from event to parameters to the created workflow (to investigate)**
-* **argo event template? / argo workflows template(to investigate and streamline)**
+* argo sensor template can be used to [trigger](https://argoproj.github.io/argo-events/APIs/#argoproj.io/v1alpha1.TriggerTemplate) [argo workflows](https://argoproj.github.io/argo-events/APIs/#argoproj.io/v1alpha1.ArgoWorkflowTrigger) from template
 * use event metadata to provide path to local s3 downloaded file
 * s3 input (get files from MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
