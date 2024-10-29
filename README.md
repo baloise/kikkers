@@ -39,5 +39,5 @@ Create Sensor
 * s3 input (get files from MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * set archive to {} to keep plain files when put to s3
-* **ghcr.io/luechtdiode/sudoku:0.0.2 (add link)**
+* **ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)**
 
