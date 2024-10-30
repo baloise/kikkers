@@ -39,12 +39,14 @@ Create RBAC needed to run workflows
 * [workflow-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/workflow-rbac.yaml)
 
 Create EventSource
+
 * [eventsource.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/eventsource.yaml)
 * Watch for `s3:ObjectCreated:Put` in bucket `test` using Access and Secret Keys provided in `artifacts-minio` secret and create `sudoku` event
 * Filter to `prefix: "input"` and `suffix: ".txt"`
 * Point to Route to trust certificate (Route re-encrypt using MinIO destination certificate)
 
 Create Sensor
+
 * [sensor.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor.yaml)
 * Create workflow that References a workflowTemplate as soon as event is created on the eventbus
 * Reference event `sudoku` event from eventSource `minio`
@@ -60,3 +62,17 @@ Create workflowTemplate
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * set archive to {} to keep plain files when put to s3
 * ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)
+
+## Argo Rollouts
+
+* Deploy using OLM, as OpenShift [Argo Rollout plugin](https://argo-rollouts.readthedocs.io/en/stable/plugins/) is needed for HAProxy traffic-splitting/routing integration on Argo Rollout Controller deployment.
+
+```yaml
+      trafficRouting:
+        plugins:
+          argoproj-labs/openshift:
+            routes:
+              - ...
+```
+
+<https://docs.openshift.com/gitops/1.14/argo_rollouts/routing-traffic-by-using-argo-rollouts.html>
