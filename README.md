@@ -120,6 +120,8 @@ Use username of file-uploader to define outputfolder. See separate [workflow-imp
 
 ## Argo Rollouts
 
+* Application need to be able to scale horizontally (more than one replica possible to run at the same time)
+
 ![rollouts](rollouts.png "rollouts")
 
 
@@ -175,8 +177,8 @@ Provide openshift-monitoring metrics (Do not use this in producation!)
 Create short-live token for Demo
 
 ```bash
-TOKEN=$(k create token thanos-querier-reader --namespace argo-rollouts-playground-test --duration 60m)
-k create secret generic token --from-literal=token="Bearer $TOKEN"
+TOKEN=$(kubectl create token thanos-querier-reader --namespace argo-rollouts-playground-test --duration 6000m)
+kubectl create secret generic token --from-literal=token="Bearer $TOKEN"
 ```
 
 ### Trivial Demo
@@ -184,7 +186,7 @@ k create secret generic token --from-literal=token="Bearer $TOKEN"
 Create some requests
 
 ```bash
-k delete rollout rollouts-haproxy-demo
+kubectl delete rollout rollouts-haproxy-demo
 while true; do sleep 0.1 && curl https://rollouts-demo-route-argo-rollouts-playground-test.apps.baloise.dev -I; done
 ```
 
@@ -201,6 +203,8 @@ Prevent webserver from starting up / generate some 5xx
 ```
 
 ```bash
-k argo rollouts get rollout rollouts-haproxy-demo --watch
-k get analysisrun
+kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
+kubectl argo rollouts promote rollouts-haproxy-demo 
+
+kubectl get analysisrun
 ```
