@@ -8,7 +8,7 @@ Argo Events playground (Code Camp 2024)
 
 ### Setup
 
-Deploy MinIO instance
+#### Deploy MinIO instance
 
 * Expose minio and minio-console svc
 * Add generated ca to destinationCA in Routes
@@ -33,19 +33,19 @@ Create [native NATs eventbus](https://github.com/baloise-incubator/code-camp-app
   * Maximum number of bytes in a message payload (Defaults to 1MB)
   * https://argoproj.github.io/argo-events/eventbus/stan/#more-about-native-nats-eventbus
 
-Create RBAC needed to run workflows
+#### Create RBAC needed to run workflows
 
 * [sensor-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor-rbac.yaml)
 * [workflow-rbac.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/workflow-rbac.yaml)
 
-Create EventSource
+#### Create EventSource
 
 * [eventsource.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/eventsource.yaml)
 * Watch for `s3:ObjectCreated:Put` in bucket `test` using Access and Secret Keys provided in `artifacts-minio` secret and create `sudoku` event
 * Filter to `prefix: "input"` and `suffix: ".txt"`
 * Point to Route to trust certificate (Route re-encrypt using MinIO destination certificate)
 
-Create Sensor
+#### Create Sensor
 
 * [sensor.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor.yaml)
 * Create workflow that References a workflowTemplate as soon as event is created on the eventbus
@@ -55,17 +55,21 @@ Create Sensor
   * Created Argo Workflows resource references Argo Workflow Template
 * use event metadata to provide path to local s3 downloaded file
 
-Create workflowTemplate
+#### Create workflowTemplate
 
 * [sudoku-wft.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sudoku-wft.yaml)
 * s3 input (get files from MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * set archive to {} to keep plain files when put to s3
 * ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)
-* capture more context-data from Minio Sudoku Event and try to identify Sudoku File Uploader for further notification purposes
+
+
+#### Make use of extended hanlding of event-metadata
+
+Capture more context-data from Minio Sudoku Event and try to identify Sudoku File Uploader for further notification purposes
   
-  Sample Event Payload (see pricipalId: Sudoku Requester):
-  ```json
+Sample Event Payload (see pricipalId: Sudoku Requester):
+```json
   [{
     eventVersion:2.0,
     eventSource:minio:s3,
@@ -110,8 +114,9 @@ Create workflowTemplate
       userAgent:MinIO (linux; amd64) minio-go/v7.0.70 MinIO Console/(dev)
     }
   }]
-  ```
-* use username of file-uploader to define outputfolder. See separate [workflow-implmentation](https://github.com/luechtdiode/mk8-argo/tree/mk8-128/argo-events-playground-test)
+```
+
+Use username of file-uploader to define outputfolder. See separate [workflow-implmentation](https://github.com/luechtdiode/mk8-argo/tree/mk8-128/argo-events-playground-test)
 
 ## Argo Rollouts
 
