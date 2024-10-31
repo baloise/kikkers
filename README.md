@@ -6,6 +6,8 @@ Argo Events playground (Code Camp 2024)
 
 ![minio](minio.drawio.png "minio")
 
+### Setup
+
 Deploy MinIO instance
 
 * Expose minio and minio-console svc
@@ -48,7 +50,7 @@ Create Sensor
 * [sensor.yaml](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-events-playground-test/sensor.yaml)
 * Create workflow that References a workflowTemplate as soon as event is created on the eventbus
 * Reference event `sudoku` event from eventSource `minio`
-* **test-dep provide metadata from event to parameters to the created workflow (to investigate)**
+* test-dep provide metadata from event to parameters to the created workflow
 * Argo Sensor k8s trigger create Argo Workflow resource
   * Created Argo Workflows resource references Argo Workflow Template
 * use event metadata to provide path to local s3 downloaded file
