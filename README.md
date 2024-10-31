@@ -70,50 +70,50 @@ Capture more context-data from Minio Sudoku Event and try to identify Sudoku Fil
   
 Sample Event Payload (see pricipalId: Sudoku Requester):
 ```json
-  [{
-    eventVersion:2.0,
-    eventSource:minio:s3,
-    awsRegion:,
-    eventTime:2024-10-30T13:02:09.050Z,
-    eventName:s3:ObjectCreated:Put,
-    userIdentity:{
-      principalId:Sudoku Requester
-    },
-    requestParameters:{
-      principalId:Sudoku Requester,
-      region:,
-      sourceIPAddress:redacted minio host ip
-    },
-    responseElements:{
-      x-amz-id-2:912a0631cecf761f73c7401d71bc819e9fd4b007e66fba8f36cc12235413475e,
-      x-amz-request-id:18033C9D81E3DDB9,
-      x-minio-deployment-id:358cb810-c0cc-4d30-9e86-e5bfbdf8cd0f,
-      x-minio-origin-endpoint:https://minio.redacted.svc.cluster.local
-    },
-    s3:{
-      s3SchemaVersion:1.0,
-      configurationId:Config,
-      bucket:{
-        name:test,
-        ownerIdentity:{
-         principalId:Sudoku Requester
-        },
-        arn:arn:aws:s3:::test
+[{
+  eventVersion:2.0,
+  eventSource:minio:s3,
+  awsRegion:,
+  eventTime:2024-10-30T13:02:09.050Z,
+  eventName:s3:ObjectCreated:Put,
+  userIdentity:{
+    principalId:Sudoku Requester
+  },
+  requestParameters:{
+    principalId:Sudoku Requester,
+    region:,
+    sourceIPAddress:redacted minio host ip
+  },
+  responseElements:{
+    x-amz-id-2:912a0631cecf761f73c7401d71bc819e9fd4b007e66fba8f36cc12235413475e,
+    x-amz-request-id:18033C9D81E3DDB9,
+    x-minio-deployment-id:358cb810-c0cc-4d30-9e86-e5bfbdf8cd0f,
+    x-minio-origin-endpoint:https://minio.redacted.svc.cluster.local
+  },
+  s3:{
+    s3SchemaVersion:1.0,
+    configurationId:Config,
+    bucket:{
+      name:test,
+      ownerIdentity:{
+        principalId:Sudoku Requester
       },
-      object:{
-        key:input/sudoku.txt,
-        size:2591,
-        eTag:5824476e697ce635d1eae18057131aab,contentType:text/plain,
-        userMetadata:{content-type:text/plain},
-        sequencer:18033C9D81FB2313
-      }
+      arn:arn:aws:s3:::test
     },
-    source:{
-      host:redacted minio host ip,
-      port:,
-      userAgent:MinIO (linux; amd64) minio-go/v7.0.70 MinIO Console/(dev)
+    object:{
+      key:input/sudoku.txt,
+      size:2591,
+      eTag:5824476e697ce635d1eae18057131aab,contentType:text/plain,
+      userMetadata:{content-type:text/plain},
+      sequencer:18033C9D81FB2313
     }
-  }]
+  },
+  source:{
+    host:redacted minio host ip,
+    port:,
+    userAgent:MinIO (linux; amd64) minio-go/v7.0.70 MinIO Console/(dev)
+  }
+}]
 ```
 
 Use username of file-uploader to define outputfolder. See separate [workflow-implmentation](https://github.com/luechtdiode/mk8-argo/tree/mk8-128/argo-events-playground-test)
