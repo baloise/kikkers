@@ -205,4 +205,4 @@ Generate some 403
 kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
 kubectl argo rollouts promote rollouts-haproxy-demo 
 
-kubectl get analysisrun
+kubectl get analysisruns.argoproj.io
