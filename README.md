@@ -192,19 +192,17 @@ while true; do sleep 0.1 && curl https://rollouts-demo-route-argo-rollouts-playg
 
 [Metrics](https://console.baloise.dev/monitoring/query-browser?query0=sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%2Ccode%21%7E%22%5B4-5%5D.*%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29%0A++++++++++%2F%0A++++++++++sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29)
 
-Prevent webserver from starting up / generate some 5xx
+Generate some 403
 
 ```bash
-        args:
-        - while true; do sleep 100; done
-        command:
-        - /bin/sh
-        - -c
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: nginx
 ```
 
 ```bash
+
 kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
 kubectl argo rollouts promote rollouts-haproxy-demo 
 
 kubectl get analysisrun
-```
