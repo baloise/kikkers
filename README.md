@@ -2,8 +2,6 @@
 
 Argo Events playground (Code Camp 2024)
 
-![brainstorming](kikkers.drawio.png "kikkers")
-
 ## MinIO Use Case
 
 ![minio](minio.drawio.png "minio")
@@ -115,6 +113,9 @@ Create workflowTemplate
 
 ## Argo Rollouts
 
+![rollouts](rollouts.png "rollouts")
+
+
 * Deploy using OLM, as OpenShift [Argo Rollout plugin](https://argo-rollouts.readthedocs.io/en/stable/plugins/) is needed for HAProxy traffic-splitting/routing integration on Argo Rollout Controller deployment.
 
 ```yaml
@@ -126,3 +127,73 @@ Create workflowTemplate
 ```
 
 <https://docs.openshift.com/gitops/1.14/argo_rollouts/routing-traffic-by-using-argo-rollouts.html>
+
+### Setup
+
+Rollout
+
+* [Stable Service](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-stable-svc.yaml)
+* [Canary Service](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-canary-svc.yaml)
+* [Route](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-route.yaml)
+  * Define alternateBackends to point to canary service using weight managed by Argo Rollouts
+* [Rollout Resource](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-rollout.yaml)
+  * Defines Pod spec
+  * Differs from deployment in strategy section
+    * Split traffic between canary service and stable service using the alternateBackends defintion in Route
+    * Use OpenShift traffic routing plugin
+    * Add Criteria in steps to proceed with rollouts using an AnalysisTemplate
+    * Pass route name to rerfence it in HAproxy metrics in analysis
+
+Analysis
+
+* [AnalysisTemplate](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-analysistemplate.yaml)
+  * Use success rate of request to rollout or rollback
+    * Run analysis every 10s / 10 times
+    * failureLimit: 3 # Fixme
+    * success rate above 90% required to proceed
+    * Use OpenShift Monitoring provided metrics `haproxy_backend_http_responses_total`
+    * Authenticate using serviceAccount against Thanos Querier API
+
+Provide openshift-monitoring metrics (Do not use this in producation!)
+
+* [ServiceMonitor](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/servicemonitor.yaml)
+  * For demonstation purpose only. Do not add serviceMonitors to RH provided openshift-monitoring stack
+  * Make sure you have 1s scrape interval
+* [Thanos Querier SA](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-thanos-querier-reader-sa.yaml)
+  * Provide SA that can access openshift-monitoring using a bearer token
+* [Thanos Querier CRB](https://github.com/baloise-incubator/code-camp-apps/blob/master/argo-rollouts-playground-test/haproxy-thanos-querier-reader-crb.yaml)
+  * openshift-monitoring uses oauth proxy / openshift-delegate-urls to gran access to serviceAccounts that can `get` `namespace`
+
+
+Create short-live token for Demo
+
+```bash
+TOKEN=$(k create token thanos-querier-reader --namespace argo-rollouts-playground-test --duration 60m)
+k create secret generic token --from-literal=token="Bearer $TOKEN"
+```
+
+### Trivial Demo
+
+Create some requests
+
+```bash
+k delete rollout rollouts-haproxy-demo
+while true; do sleep 0.1 && curl https://rollouts-demo-route-argo-rollouts-playground-test.apps.baloise.dev -I; done
+```
+
+[Metrics](https://console.baloise.dev/monitoring/query-browser?query0=sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%2Ccode%21%7E%22%5B4-5%5D.*%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29%0A++++++++++%2F%0A++++++++++sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29)
+
+Prevent webserver from starting up / generate some 5xx
+
+```bash
+        args:
+        - while true; do sleep 100; done
+        command:
+        - /bin/sh
+        - -c
+```
+
+```bash
+k argo rollouts get rollout rollouts-haproxy-demo --watch
+k get analysisrun
+```
