@@ -62,6 +62,55 @@ Create workflowTemplate
 * s3 output (put files to MinIO using Access and Secret Keys provided in `artifacts-minio` secret)
 * set archive to {} to keep plain files when put to s3
 * ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)
+* capture more context-data from Minio Sudoku Event, try to identify Sudoku File Uploader for further notification purposes
+  Sample Event Payload:
+  ```json
+  [{
+    eventVersion:2.0,
+    eventSource:minio:s3,
+    awsRegion:,
+    eventTime:2024-10-30T13:02:09.050Z,
+    eventName:s3:ObjectCreated:Put,
+    userIdentity:{
+      principalId:root
+    },
+    requestParameters:{
+      principalId:root,
+      region:,
+      sourceIPAddress:redacted minio host ip
+    },
+    responseElements:{
+      x-amz-id-2:912a0631cecf761f73c7401d71bc819e9fd4b007e66fba8f36cc12235413475e,
+      x-amz-request-id:18033C9D81E3DDB9,
+      x-minio-deployment-id:358cb810-c0cc-4d30-9e86-e5bfbdf8cd0f,
+      x-minio-origin-endpoint:https://minio.redacted.svc.cluster.local
+    },
+    s3:{
+        s3SchemaVersion:1.0,
+        configurationId:Config,
+        bucket:{
+            name:test,
+            ownerIdentity:{
+                principalId:root
+            },
+            arn:arn:aws:s3:::test
+        },
+        object:{
+            key:input/sudoku.txt,
+            size:2591,
+            eTag:5824476e697ce635d1eae18057131aab,contentType:text/plain,
+            userMetadata:{content-type:text/plain},
+            sequencer:18033C9D81FB2313
+        }
+    },
+    source:{
+        host:redacted minio host ip,
+        port:,
+        userAgent:MinIO (linux; amd64) minio-go/v7.0.70 MinIO Console/(dev)
+    }
+}]
+
+  ```
 
 ## Argo Rollouts
 
