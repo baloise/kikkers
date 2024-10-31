@@ -88,11 +88,11 @@ Create workflowTemplate
     },
     s3:{
       s3SchemaVersion:1.0,
-       configurationId:Config,
-       bucket:{
-         name:test,
-         ownerIdentity:{
-          principalId:Sudoku Requester
+      configurationId:Config,
+      bucket:{
+        name:test,
+        ownerIdentity:{
+         principalId:Sudoku Requester
         },
         arn:arn:aws:s3:::test
       },
@@ -111,6 +111,7 @@ Create workflowTemplate
     }
   }]
   ```
+* use username of file-uploader to define outputfolder. See separate [workflow-implmentation](https://github.com/luechtdiode/mk8-argo/tree/mk8-128/argo-events-playground-test)
 
 ## Argo Rollouts
 
