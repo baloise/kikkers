@@ -64,7 +64,7 @@ Create [native NATs eventbus](https://github.com/baloise-incubator/code-camp-app
 * ghcr.io/luechtdiode/sudoku:0.0.2 [Sudoku Solver Repo](https://github.com/luechtdiode/sudoku)
 
 
-#### Make use of extended hanlding of event-metadata
+#### Make use of extended handling of event-metadata
 
 Capture more context-data from Minio Sudoku Event and try to identify Sudoku File Uploader for further notification purposes
   
