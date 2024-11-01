@@ -222,8 +222,9 @@ Start TUI
 
 ```bash
 kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
-
 ```
+
+![alt text](rollout-tui.png)
 
 Proceed with rollout
 
