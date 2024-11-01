@@ -135,6 +135,17 @@ Use username of file-uploader to define outputfolder. See separate [workflow-imp
               - ...
 ```
 
+Ignore weight in ArgoCD
+
+```bash
+  resource.customizations: |
+    route.openshift.io/Route:
+      ignoreDifferences: |
+        jsonPointers:
+        - /spec/to/weight
+        - /spec/alternateBackends
+```
+
 <https://docs.openshift.com/gitops/1.14/argo_rollouts/routing-traffic-by-using-argo-rollouts.html>
 
 ### Setup
