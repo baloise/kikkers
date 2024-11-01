@@ -211,9 +211,24 @@ Generate some 403
           name: nginx
 ```
 
+Start Dashboard
 ```bash
+kubectl argo rollouts dashboard
+```
 
+![alt text](rollout-ui.png)
+
+Start TUI
+
+```bash
 kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
+
+```
+
+Proceed with rollout
+
+```bash
 kubectl argo rollouts promote rollouts-haproxy-demo 
 
 kubectl get analysisruns.argoproj.io
+```
