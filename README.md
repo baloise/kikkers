@@ -143,7 +143,8 @@ Ignore weight in ArgoCD
       ignoreDifferences: |
         jsonPointers:
         - /spec/to/weight
-        - /spec/alternateBackends
+        jqPathExpressions:
+        - '.spec.alternateBackends[]?.weight'
 ```
 
 <https://docs.openshift.com/gitops/1.14/argo_rollouts/routing-traffic-by-using-argo-rollouts.html>
