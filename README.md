@@ -199,7 +199,7 @@ Create some requests
 
 ```bash
 kubectl delete rollout rollouts-haproxy-demo
-while true; do sleep 0.1 && curl https://rollouts-demo-route-argo-rollouts-playground-test.apps.baloise.dev -I; done
+while true; do sleep 0.1 && curl https://rollouts-demo-route-argo-rollouts-playground-test.apps.baloise.dev -s -I | grep -i "HTTP/1.1" -A1; done
 ```
 
 [Metrics](https://console.baloise.dev/monitoring/query-browser?query0=sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%2Ccode%21%7E%22%5B4-5%5D.*%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29%0A++++++++++%2F%0A++++++++++sum%28%0A++++++++++++rate%28%0A++++++++++++++haproxy_backend_http_responses_total%7Broute%3D%22rollouts-demo-route%22%7D%5B10s%5D%0A++++++++++++%29%0A++++++++++%29)
@@ -212,17 +212,15 @@ Generate some 403
           name: nginx
 ```
 
-Start Dashboard
-```bash
-kubectl argo rollouts dashboard
-```
+[kubectl argo rollouts dashboard](https://argocd.baloise.dev/applications/argocd/argo-rollouts-playground-test?view=tree&resource=&node=argoproj.io%2FRollout%2Fargo-rollouts-playground-test%2Frollouts-haproxy-demo%2F0&tab=extension-0)
+
 
 ![alt text](rollout-ui.png)
 
 Start TUI
 
 ```bash
-kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
+kubectl argo rollouts -n argo-rollouts-playground-test get rollout rollouts-haproxy-demo --watch
 ```
 
 ![alt text](rollout-tui.png)
@@ -230,7 +228,6 @@ kubectl argo rollouts get rollout rollouts-haproxy-demo --watch
 Proceed with rollout
 
 ```bash
-kubectl argo rollouts promote rollouts-haproxy-demo 
-
+kubectl argo rollouts -n argo-rollouts-playground-test get rollout rollouts-haproxy-demo --watch
 kubectl get analysisruns.argoproj.io
 ```
