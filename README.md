@@ -118,6 +118,9 @@ Sample Event Payload (see pricipalId: Sudoku Requester):
 
 Use username of file-uploader to define outputfolder. See separate [workflow-implmentation](https://github.com/luechtdiode/mk8-argo/tree/mk8-128/argo-events-playground-test)
 
+<img width="275" alt="image" src="https://github.com/user-attachments/assets/e5a3b90a-cb9e-406b-b285-628e93cd50e0">
+
+
 ## Argo Rollouts
 
 * Application need to be able to scale horizontally (more than one replica possible to run at the same time)
